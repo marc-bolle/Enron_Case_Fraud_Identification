@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F27b002c8-ed2f-41ce-9c00-b09075479e93.jpg?fit=scale-down&source=next&width=700">
+</p>
+
 <h1>Machine Learning to Identify Fraud in the Enron Corpus</h1>
 
 <h2>Context</h2>
