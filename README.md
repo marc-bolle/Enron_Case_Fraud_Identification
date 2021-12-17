@@ -21,6 +21,10 @@ I will explore the data, replace the missing values, remove the outliers and dev
 <p>- The project was carried out in Python in a Jupyter Notebook file (<strong>code/Enron_Classifier_Notebook.ipynb</strong>) with comments.<br>
 - This document explains my reasoning, displays the main lines of code as well as our results.</p>
 
+<br>
+<hr>
+<br>
+
 <h2>Outline</h2>
 
 <h3>Task 1: Explore the data</h3>
@@ -67,6 +71,9 @@ Number of Persons of Interest: 18<br>
 Number of people without Person of Interest label: 128</p>
 
 <h3>1.2 Replace Missing Values</h3>
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/missing_values.jpg">
+</p>
 <p>The data visualization process reveals that there are lots of missing values in our dataset.<br> 
 There are even 5 features that have more than 100 missing data points (out of 146).</p> 
  
@@ -75,17 +82,29 @@ The variable email_address displays the email address of each employee and has n
 If I remove all the rows that contain missing values, the dataset would become much too small to train an accurate classifier model. Thus, I will try to impute these missing values.</p>
 
 <h3>1.2.1 Replace missing values of the financial features by zeros</h3>
-<p>For the financial features in the financial_features_list, we can assume that the NaN values are zeros. For instance, an employee who do not receive director fees nor a bonus shouldn't have a NaN value but a 0. Thus, I will replace the NaN values in the financial features by zeros.<br>
-There is one exception for the salary feature where missing values can’t be zeros.</p> 
- 
+<p>For the financial features in the financial_features_list, we can assume that the NaN values are zeros. For instance, an employee who do not receive director fees nor a bonus shouldn't have a NaN value but a 0. Thus, I will replace the NaN values in the financial features by zeros.</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/replace_missing_values.jpg">
+</p>
+<p>There is one exception for the salary feature where missing values can’t be zeros.</p> 
+
 <h3>1.2.2 Replace missing values of the salary feature by the mean</h3>
 <p>There are 51 missing values in the salary feature.<br> 
 A missing salary can't be a 0 since each employee should be paid a wage. We can assume that NaN values in the salary variable are true missing values.<br> 
 I choose to replace the missing salaries by the mean of all the salaries: $267,102</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/replace_salary_missing_values.jpg">
+</p>
  
 <h3>1.2.3 Replace missing values of the email features using KNN imputer</h3>
 <p>The email features are very important because they show the degree of relationship between POI and non-POI employees. Replacing these values by the mean or the median or the most common value of the given columns doesn't appear as an effective solution in this case.<br>
 I choose to impute these missing values using Scikit Learn's KNNImputer function. It uses the K-nearest Neighbors algorithm to impute the missing values using the mean value of the nearest neighbors found in the dataset.</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/KNN_imputation_email_missing_values.jpg">
+</p>
  
 <h2>Task 2: Remove Outliers</h2>
 <p>First of all, I remove the ‘total row’ value since it distorts our data and it is not needed for our machine learning model.</p> 
@@ -93,15 +112,28 @@ I choose to impute these missing values using Scikit Learn's KNNImputer function
 <h3>2.1 Visualize outliers</h3>
 <p>We can plot a boxplot for each feature in the dataset to have a look on outliers.</p>
 
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/outliers_boxplot.jpg">
+</p>
+
 <p>We can see that there are lots of outliers in our dataset.<br> 
 We can also identify the variables that contain very big outliers: restricted_stock, exercised_stock_options, total_stock_value, bonus, loan_advances, total_payments.</p> 
 
 <p>Let’s have a closer look to the six features that have the biggest outliers:</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/outliers_6_features.jpg">
+</p>
  
 <h3>2.2 Identify outliers using Z-score</h3>
 <p>I decide to use the Z-score to identify the outliers. The Z-score is the number of standard deviations away from the mean that a certain data point is.<br> 
-Since the dataset is very small and since there are big outliers, I decide to classify as outlier anybody that has a value (in any feature) superior to a Z-score of 6. That is, six standard deviations away from the mean of the feature.<br>
-This allows me to identify 10 people. I keep the people who are labeled as Person of Interest (POI) since this is the target variable and this information will be very precious to build the machine learning model.</p>
+Since the dataset is very small and since there are big outliers, I decide to classify as outlier anybody that has a value (in any feature) superior to a Z-score of 6. That is, six standard deviations away from the mean of the feature.</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/outliers_z_score.jpg">
+</p>
+
+<p>This allows me to identify 10 people. I keep the people who are labeled as Person of Interest (POI) since this is the target variable and this information will be very precious to build the machine learning model.</p>
  
 <p>We now have 9 outliers (not POI) that we can remove from the dataset:<br> 
 - LOVORATO JOHN J,<br> 
@@ -112,8 +144,17 @@ This allows me to identify 10 people. I keep the people who are labeled as Perso
 - FREVERT MARK A,<br> 
 - MARTIN AMANDA K, <br>
 - LOCKHART EUGENE E,<br> 
-- THE TRAVEL AGENCY IN THE PARK,</p>
-<p>After having removed the 10 outliers, we can plot again the boxplots:</p>
+- THE TRAVEL AGENCY IN THE PARK.</p>
+
+<p>After having removed the 10 outliers, we can plot again the boxplots of the outliers:</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/outliers_boxplot_after.jpg">
+</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/outliers_6_features_after.jpg">
+</p>
 
 <p>As we can see, the biggest outliers have been removed but there are still some of them. However, since the dataset is very small, we can’t afford to remove more as too much information for the model will be lost (the dataset is now be composed of 135 employees).</p>
 
@@ -122,6 +163,10 @@ This allows me to identify 10 people. I keep the people who are labeled as Perso
 
 <h3>3.1 Create new calculated features</h3>
 <p>I use the function compute_fraction to create new features:</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/function_new_features.jpg">
+</p>
  
 <p>I’ve decided to create 10 new features:<br>
 - fraction_from_poi = from_poi_to_this_person / to_messages<br>
@@ -140,6 +185,10 @@ This allows me to identify 10 people. I keep the people who are labeled as Perso
 <h3>3.2 Select best features with SelectKBest</h3>
 <p>I have to choose the best features for the model. The best features are the ones that explain the most the target variable (POI).<br>
 I decide to use Scikit learn’s SelectKbest to select the best features and decide to retain the first 5 features with the highest scores (among the 30 variables).</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/k_best_features.jpg">
+</p>
 
 <p>SelectKBest determines that the following features are the best ones: 'bonus_to_total', 'deferred_income', 'bonus', 'fraction_shared_poi', 'message_shared_fraction'</p>
 
@@ -183,7 +232,11 @@ I then scale the features using Scikit Learn’s MinMaxScaler(), which is a requ
 
 <h2>Task 5: Tune your classifier to achieve better than .42 precision and recall</h2>
 <h3>5.1 Split the dataset into training and test sets</h3>
-<p>We split the dataset into a training set (70% of the data) and a test set (30% of the data).</p>
+<p>I split the dataset into a training set (70% of the data) and a test set (30% of the data).</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/train_test_split.jpg">
+</p>
  
 <h3>5.2 Find the best parameters with GridSearch</h3>
 <p>To find the best parameters for logistic regression, I perform a multi-metric evaluation on cross_val_score and GridSearchCV.<br> 
@@ -191,15 +244,31 @@ The Stratified K-Folds cross-validator is used for the cross-validation strategy
 The chosen scorers are the following ones: precision_score, recall_score, accuracy_score and f1_score.<br> 
 Ultimately, I choose the f1_score to refit the estimator with the parameters setting that has the best cross-validated f1_score.</p> 
  
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/grid_search_cv.jpg">
+</p>
+ 
 <p>The results are the following:</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/parameters_gridsearchcv.jpg">
+</p>
  
 <p>As we can see, there is a high number of true negative (TN).</p> 
 
 <h3>5.3 Fit the model</h3>
 <p>I can now fit our logistic regression with the best parameters found by GridSearchCV.</p> 
 
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/fit_model.jpg">
+</p>
+
 <h2>Task 6: Dump and evaluate the classifier</h2> 
 <p>I run the tester.py script to evaluate our model. The results are the following:</p>
+
+<p align="center">
+  <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/model_evaluation.jpg">
+</p>
  
 <h2>Conclusion</h2>
 <p>SelectKBest has identified 5 features that are the most meaningful ones to predict whether or not an employee is POI: 'bonus_to_total', 'deferred_income', 'bonus', 'fraction_shared_poi' and 'message_shared_fraction'.</p>
