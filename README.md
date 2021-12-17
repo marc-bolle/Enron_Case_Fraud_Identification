@@ -22,8 +22,10 @@ It contains:
 The model will be a classifier, that is, a model that will predict the class (POI or not POI) of the data points (employees).<br> 
 I will explore the data, replace the missing values, remove the outliers and develop a classifier. The objective is to get a precision and recall scores above 0.42.</p>
 
+<p>This project was the final project of the course Python for Data Science as part of my MSc Artificial Intelligence and Business Analytics at TBS Education. It also used to be the final project of the Udacity Machine Learning course.</p>
+
 <p>- The project was carried out in Python in a Jupyter Notebook file (<strong>code/Enron_Classifier_Notebook.ipynb</strong>) with comments.<br>
-- This document explains my reasoning, displays the main lines of code as well as our results.</p>
+- This document explains my reasoning, displays the main lines of code as well as the output</p>
 
 <br>
 <hr>
@@ -66,8 +68,8 @@ I will explore the data, replace the missing values, remove the outliers and dev
 <h3>1.1 Data Exploration</h3>
 <p>Features of this dataset fall into three major types:<br>
 - Person of Interest (POI) label,<br>
-- financial features (salary, bonus, stocks, etc.),<br>
-- email features (communication between POI and other employees)</p>
+- Financial features (salary, bonus, stocks, etc.),<br>
+- Email features (communication between POI and other employees)</p>
 
 <p>Total number of features: 21<br>
 Total number of data points: 146<br>
@@ -81,12 +83,12 @@ Number of people without Person of Interest label: 128</p>
 <p>The data visualization process reveals that there are lots of missing values in our dataset.<br> 
 There are even 5 features that have more than 100 missing data points (out of 146).</p> 
  
-<p>The features that contain the highest number of missing values are the financial features (loan_advances, director_fees, restricted_stock_deferred, derral_payments, deferred_income, etc.)<br>
-The variable email_address displays the email address of each employee and has no value to train a machine learning model. Hence, we drop this column from the dataset.<br>   
+<p>The features that contain the highest number of missing values are the financial features (<i>loan_advances, director_fees, restricted_stock_deferred, derral_payments, deferred_income</i>, etc.)<br>
+  The variable <i>email_address</i> displays the email address of each employee and has no value to train a machine learning model. Hence, we drop this column from the dataset.<br>   
 If I remove all the rows that contain missing values, the dataset would become much too small to train an accurate classifier model. Thus, I will try to impute these missing values.</p>
 
 <h3>1.2.1 Replace missing values of the financial features by zeros</h3>
-<p>For the financial features in the financial_features_list, we can assume that the NaN values are zeros. For instance, an employee who do not receive director fees nor a bonus shouldn't have a NaN value but a 0. Thus, I will replace the NaN values in the financial features by zeros.</p>
+<p>For the financial features in the <i>financial_features_list</i>, we can assume that the NaN values are zeros. For instance, an employee who do not receive director fees nor a bonus shouldn't have a NaN value but a 0. Thus, I will replace the NaN values in the financial features by zeros.</p>
 
 <p align="center">
   <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/replace_missing_values.jpg">
@@ -94,7 +96,7 @@ If I remove all the rows that contain missing values, the dataset would become m
 <p>There is one exception for the salary feature where missing values can’t be zeros.</p> 
 
 <h3>1.2.2 Replace missing values of the salary feature by the mean</h3>
-<p>There are 51 missing values in the salary feature.<br> 
+<p>There are 51 missing values in the <i>salary</i> feature.<br> 
 A missing salary can't be a 0 since each employee should be paid a wage. We can assume that NaN values in the salary variable are true missing values.<br> 
 I choose to replace the missing salaries by the mean of all the salaries: $267,102</p>
 
@@ -111,7 +113,7 @@ I choose to impute these missing values using Scikit Learn's KNNImputer function
 </p>
  
 <h2>Task 2: Remove Outliers</h2>
-<p>First of all, I remove the ‘total row’ value since it distorts our data and it is not needed for our machine learning model.</p> 
+<p>First of all, I remove the <i>‘total row’</i> value since it distorts our data and it is not needed for our machine learning model.</p> 
 
 <h3>2.1 Visualize outliers</h3>
 <p>We can plot a boxplot for each feature in the dataset to have a look on outliers.</p>
@@ -121,7 +123,7 @@ I choose to impute these missing values using Scikit Learn's KNNImputer function
 </p>
 
 <p>We can see that there are lots of outliers in our dataset.<br> 
-We can also identify the variables that contain very big outliers: restricted_stock, exercised_stock_options, total_stock_value, bonus, loan_advances, total_payments.</p> 
+We can also identify the variables that contain very big outliers: <i>restricted_stock, exercised_stock_options, total_stock_value, bonus, loan_advances, total_payments</i>.</p> 
 
 <p>Let’s have a closer look to the six features that have the biggest outliers:</p>
 
@@ -173,7 +175,7 @@ Since the dataset is very small and since there are big outliers, I decide to cl
 </p>
  
 <p>I’ve decided to create 10 new features:<br>
-- fraction_from_poi = from_poi_to_this_person / to_messages<br>
+<i>- fraction_from_poi = from_poi_to_this_person / to_messages<br>
 - fraction_to_poi = from_this_person_to_poi / from_messages<br>
 - fraction_shared_poi = shared_receipt_with_poi / to_messages<br>
 - bonus_to_salary = bonus / salary<br>
@@ -182,7 +184,7 @@ Since the dataset is very small and since there are big outliers, I decide to cl
 - perc_salary = salary / total_payments<br>
 - total_messages = to_messages + from_messages<br>
 - total_messages_with_poi = from_this_person_to_poi + from_poi_to_this_person + shared_receipt_with_poi<br>
-- message_shared_fraction = total_messages_with_poi / total_messages</p>
+- message_shared_fraction = total_messages_with_poi / total_messages</i></p>
 
 <p>There are now 30 features in our data set.</p>
 
@@ -194,9 +196,9 @@ I decide to use Scikit learn’s SelectKbest to select the best features and dec
   <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/k_best_features.jpg">
 </p>
 
-<p>SelectKBest determines that the following features are the best ones: 'bonus_to_total', 'deferred_income', 'bonus', 'fraction_shared_poi', 'message_shared_fraction'</p>
+<p>SelectKBest determines that the following features are the best ones: <i>'bonus_to_total', 'deferred_income', 'bonus', 'fraction_shared_poi', 'message_shared_fraction'</i></p>
 
-<p>Then, I extract the features specified in a new list (my_features_list) and we split the data into labels and features.<br>
+<p>Then, I extract the features specified in a new list (<i>my_features_list</i>) and we split the data into labels and features.<br>
 I then scale the features using Scikit Learn’s MinMaxScaler(), which is a requirement to develop the classifier model.</p>
  
 <p>At this point I have selected the features and I would like to try a variety of classifiers to find the one that best suits the data.</p> 
@@ -261,21 +263,21 @@ Ultimately, I choose the f1_score to refit the estimator with the parameters set
 <p>As we can see, there is a high number of true negative (TN).</p> 
 
 <h3>5.3 Fit the model</h3>
-<p>I can now fit our logistic regression with the best parameters found by GridSearchCV.</p> 
+<p>I can now fit the logistic regression with the best parameters found by GridSearchCV.</p> 
 
 <p align="center">
   <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/fit_model.jpg">
 </p>
 
 <h2>Task 6: Dump and evaluate the classifier</h2> 
-<p>I run the tester.py script to evaluate our model. The results are the following:</p>
+<p>I run the tester.py script to evaluate the model. The results are the following:</p>
 
 <p align="center">
   <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/model_evaluation.jpg">
 </p>
  
 <h2>Conclusion</h2>
-<p>SelectKBest has identified 5 features that are the most meaningful ones to predict whether or not an employee is POI: 'bonus_to_total', 'deferred_income', 'bonus', 'fraction_shared_poi' and 'message_shared_fraction'.</p>
+<p>SelectKBest has identified 5 features that are the most meaningful ones to predict whether or not an employee is POI: <i>'bonus_to_total', 'deferred_income', 'bonus', 'fraction_shared_poi' and 'message_shared_fraction'</i>.</p>
 <p>I have chosen the logistic regression classifier since it has the highest precision and recall scores.</p>
 <p>After performing a multi-metric evaluation on cross_val_score and GridSearchCV to find the best parameters, I fitted the logistic regression on the data. It has an <strong>accuracy score of 0.82</strong>, a <strong>precision of 0.42</strong>, a <strong>recall of 0.66</strong> and a <strong>f1 score of 0.59</strong>.</p> 
 <p>Even though these scores seem low, they are actually high considering the very small size of the dataset. This model can roughly predict whether an employee is suspicious or not. Nevertheless, there are undoubtedly improvements to be made. <strong>If you have any comments or suggestions, please let me know.</strong></p>
