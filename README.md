@@ -80,12 +80,11 @@ Number of people without Person of Interest label: 128</p>
 <p align="center">
   <img src="https://github.com/marc-bolle/Enron_Case_Fraud_Identification/blob/main/tools/images/missing_values.jpg">
 </p>
-<p>The data visualization process reveals that there are lots of missing values in our dataset.<br> 
-There are even 5 features that have more than 100 missing data points (out of 146).</p> 
+<p>The data visualization process reveals that there are lots of missing values in our dataset. There are even 5 features that have more than 100 missing data points (out of 146).</p> 
  
-<p>The features that contain the highest number of missing values are the financial features (<i>loan_advances, director_fees, restricted_stock_deferred, derral_payments, deferred_income</i>, etc.)<br>
-  The variable <i>email_address</i> displays the email address of each employee and has no value to train a machine learning model. Hence, we drop this column from the dataset.<br>   
-If I remove all the rows that contain missing values, the dataset would become much too small to train an accurate classifier model. Thus, I will try to impute these missing values.</p>
+<p>The features that contain the highest number of missing values are the financial features: <i>loan_advances, director_fees, restricted_stock_deferred, derral_payments, deferred_income</i>, etc.</p>
+<p>The variable <i>email_address</i> displays the email address of each employee and has no value to train a machine learning model. Hence, I drop this column from the dataset.</p>   
+If I remove all the rows that contain missing values, the dataset would become much too small to train an accurate classifier model. Thus, I will try to impute these missing values using three different techniques.</p>
 
 <h3>1.2.1 Replace missing values of the financial features by zeros</h3>
 <p>For the financial features in the <i>financial_features_list</i>, we can assume that the NaN values are zeros. For instance, an employee who do not receive director fees nor a bonus shouldn't have a NaN value but a 0. Thus, I will replace the NaN values in the financial features by zeros.</p>
